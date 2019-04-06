@@ -42,7 +42,7 @@ namespace NeoStatsPlugin.Extensions
             bool firstTime = block.Size == 0;
             var time = unixEpoch.AddSeconds(currentBlock.Timestamp);
 
-            if (firstTime)
+            if (!firstTime)
             {
                 if (block.Hash.ToString() != currentBlock.Hash.ToString() || block.Size != currentBlock.Size || block.Timestamp != time)
                 {
@@ -54,7 +54,6 @@ namespace NeoStatsPlugin.Extensions
             block.Hash = currentBlock.Hash.ToString();
             block.Timestamp = time;
             block.Transactions.Update(currentBlock.Transactions);
-
             block.ElapsedTime = (previousBlock == null ? TimeSpan.Zero : time - previousBlock.Timestamp);
 
             if (block.Index != 0 && !firstTime)
