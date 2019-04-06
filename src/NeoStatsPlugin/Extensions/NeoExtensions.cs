@@ -8,6 +8,8 @@ namespace NeoStatsPlugin.Extensions
 {
     public static class NeoExtensions
     {
+        private static readonly DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         /// <summary>
         /// Update MemPool
         /// </summary>
@@ -38,21 +40,22 @@ namespace NeoStatsPlugin.Extensions
         public static void UpdateBlockInfo(this BlockStat block, Block currentBlock, BlockStat previousBlock)
         {
             bool firstTime = block.Size == 0;
+            var time = unixEpoch.AddSeconds(currentBlock.Timestamp);
 
             if (firstTime)
             {
-                if (block.Hash.ToString() != block.Hash || block.Size != block.Size || block.Timestamp != block.Timestamp)
+                if (block.Hash.ToString() != currentBlock.Hash.ToString() || block.Size != currentBlock.Size || block.Timestamp != time)
                 {
                     throw new ArgumentException($"Fork on {block.Index}");
                 }
             }
 
-            block.Size = block.Size;
-            block.Hash = block.Hash.ToString();
-            block.Timestamp = block.Timestamp;
+            block.Size = currentBlock.Size;
+            block.Hash = currentBlock.Hash.ToString();
+            block.Timestamp = time;
             block.Transactions.Update(currentBlock.Transactions);
 
-            block.ElapsedTime = TimeSpan.FromSeconds((previousBlock == null ? 0 : block.Timestamp - previousBlock.Timestamp));
+            block.ElapsedTime = (previousBlock == null ? TimeSpan.Zero : time - previousBlock.Timestamp);
 
             if (block.Index != 0 && !firstTime)
             {

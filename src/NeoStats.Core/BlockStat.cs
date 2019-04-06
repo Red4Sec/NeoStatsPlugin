@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using NeoStats.Core.Extensions;
 using Newtonsoft.Json;
 
 namespace NeoStats.Core
 {
-    public class BlockStat : IDisposable
+    public class BlockStat
     {
-        Stopwatch _watch;
-
         /// <summary>
         /// Block index
         /// </summary>
@@ -22,7 +20,7 @@ namespace NeoStats.Core
         /// <summary>
         /// Timestamp
         /// </summary>
-        public uint Timestamp { get; set; } = 0;
+        public DateTime Timestamp { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// Size
@@ -56,24 +54,13 @@ namespace NeoStats.Core
         /// <param name="index">Index</param>
         public BlockStat(uint index)
         {
-            _watch = new Stopwatch();
-            _watch.Start();
-
             Index = index;
         }
 
         /// <summary>
-        /// Convert to json
+        /// String representation
         /// </summary>
-        public string ToJson() => JsonConvert.SerializeObject(this, Formatting.None);
-
-        /// <summary>
-        /// Free resources
-        /// </summary>
-        public void Dispose()
-        {
-            _watch?.Stop();
-            _watch = null;
-        }
+        /// <returns></returns>
+        public override string ToString() => this.ToJson();
     }
 }

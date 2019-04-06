@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,13 +9,14 @@ using Neo.Network.P2P.Payloads;
 using Neo.Persistence;
 using Neo.Plugins;
 using NeoStats.Core;
+using NeoStats.Core.Extensions;
 using NeoStatsPlugin.Extensions;
 
 namespace NeoStatsPlugin
 {
     public class StatsPlugin : Plugin, IPersistencePlugin, IP2PPlugin
     {
-        private readonly ConcurrentDictionary<uint, BlockStat> _blocks = new ConcurrentDictionary<uint, BlockStat>();
+        private readonly BlockStatCollection _blocks = new BlockStatCollection();
 
         public override string Name => "StatsPlugin";
 
@@ -125,10 +125,10 @@ namespace NeoStatsPlugin
         /// <returns>Get block</returns>
         public BlockStat GetBlock(uint index)
         {
-            if (!_blocks.TryGetValue(index, out var ret))
+            if (!_blocks.Blocks.TryGetValue(index, out var ret))
             {
                 ret = new BlockStat(index);
-                _blocks[index] = ret;
+                _blocks.Blocks[index] = ret;
 
                 return ret;
             }
@@ -145,15 +145,15 @@ namespace NeoStatsPlugin
         {
             // Find
 
-            if (!_blocks.TryGetValue(block.Index, out var ret))
+            if (!_blocks.Blocks.TryGetValue(block.Index, out var ret))
             {
                 ret = new BlockStat(block.Index);
-                _blocks[block.Index] = ret;
+                _blocks.Blocks[block.Index] = ret;
             }
 
             // Update block info
 
-            if (_blocks.TryGetValue(block.Index - 1, out var prev))
+            if (_blocks.Blocks.TryGetValue(block.Index - 1, out var prev))
             {
                 ret.UpdateBlockInfo(block, prev);
             }
@@ -171,11 +171,9 @@ namespace NeoStatsPlugin
         /// <param name="block">Block</param>
         public void Log(BlockStat block)
         {
-            if (_blocks.TryRemove(block.Index - 5, out var remove))
+            if (_blocks.Blocks.TryRemove(block.Index - 5, out var remove))
             {
                 // Save 5 blocks
-
-                remove.Dispose();
             }
 
             using (var stream = File.OpenWrite(Settings.Default.Path))

@@ -1,4 +1,6 @@
-﻿namespace NeoStats.Core
+﻿using NeoStats.Core.Extensions;
+
+namespace NeoStats.Core
 {
     public class ConsensusPhaseCount
     {
@@ -26,5 +28,11 @@
         /// Total CN
         /// </summary>
         public int M { get; set; } = 0;
+
+        /// <summary>
+        /// String representation
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => this.ToJson();
     }
 }

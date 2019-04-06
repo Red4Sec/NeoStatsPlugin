@@ -1,4 +1,6 @@
-﻿namespace NeoStats.Core
+﻿using NeoStats.Core.Extensions;
+
+namespace NeoStats.Core
 {
     public class TransactionStat
     {
@@ -16,5 +18,11 @@
         /// High priority count
         /// </summary>
         public int HighPriorty { get; set; } = 0;
+
+        /// <summary>
+        /// String representation
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => this.ToJson();
     }
 }
