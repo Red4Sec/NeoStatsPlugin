@@ -11,7 +11,6 @@ namespace NeoStatsPlugin.Stats
     {
         Stopwatch _watch;
         bool _updatedBlock;
-        bool _updatedMemPool;
 
         /// <summary>
         /// Block index
@@ -60,7 +59,7 @@ namespace NeoStatsPlugin.Stats
         /// <param name="index">Index</param>
         public BlockStat(uint index)
         {
-            _updatedBlock = _updatedMemPool = false;
+            _updatedBlock = false;
             _watch = new Stopwatch();
             _watch.Start();
 
@@ -92,19 +91,14 @@ namespace NeoStatsPlugin.Stats
 
             ElapsedTime = TimeSpan.FromSeconds((previousBlock == null ? 0 : block.Timestamp - previousBlock.Timestamp));
 
-            _updatedBlock = true;
-        }
-
-        /// <summary>
-        /// Update mem pool
-        /// </summary>
-        private void UpdateMemPool()
-        {
-            if (!_updatedMemPool)
+            if (Index != 0 && !_updatedBlock)
             {
+                // We can't access to Blockchain on GenesisBlock
+
                 MemPool.UpdateMemPool();
-                _updatedMemPool = true;
             }
+
+            _updatedBlock = true;
         }
 
         #region Consensus
@@ -114,35 +108,35 @@ namespace NeoStatsPlugin.Stats
         /// </summary>
         /// <param name="payload">Payload</param>
         /// <param name="message">Message</param>
-        public void OnChangeViewReceived(ConsensusPayload payload, ChangeView message) { UpdateMemPool(); }
+        public void OnChangeViewReceived(ConsensusPayload payload, ChangeView message) { }
 
         /// <summary>
         /// On Prepare request
         /// </summary>
         /// <param name="payload">Payload</param>
         /// <param name="message">Message</param>
-        public void OnPrepareRequestReceived(ConsensusPayload payload, PrepareRequest message) { UpdateMemPool(); }
+        public void OnPrepareRequestReceived(ConsensusPayload payload, PrepareRequest message) { }
 
         /// <summary>
         /// On Prepare response
         /// </summary>
         /// <param name="payload">Payload</param>
         /// <param name="message">Message</param>
-        public void OnPrepareResponseReceived(ConsensusPayload payload, PrepareResponse message) { UpdateMemPool(); }
+        public void OnPrepareResponseReceived(ConsensusPayload payload, PrepareResponse message) { }
 
         /// <summary>
         /// On Commit
         /// </summary>
         /// <param name="payload">Payload</param>
         /// <param name="message">Message</param>
-        public void OnCommitReceived(ConsensusPayload payload, Commit message) { UpdateMemPool(); }
+        public void OnCommitReceived(ConsensusPayload payload, Commit message) { }
 
         /// <summary>
         /// On Recovery Message
         /// </summary>
         /// <param name="payload">Payload</param>
         /// <param name="message">Message</param>
-        public void OnRecoveryMessageReceived(ConsensusPayload payload, RecoveryMessage message) { UpdateMemPool(); }
+        public void OnRecoveryMessageReceived(ConsensusPayload payload, RecoveryMessage message) { }
 
         #endregion
 
