@@ -1,4 +1,4 @@
-﻿namespace NeoStatsPlugin.Stats
+﻿namespace NeoStats.Core
 {
     public class ConsensusPhaseStat
     {

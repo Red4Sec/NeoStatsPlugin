@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NeoStatsPlugin.Stats
+namespace NeoStats.Core
 {
     public class TimeStat
     {

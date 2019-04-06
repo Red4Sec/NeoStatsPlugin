@@ -9,7 +9,8 @@ using Neo.Network.P2P;
 using Neo.Network.P2P.Payloads;
 using Neo.Persistence;
 using Neo.Plugins;
-using NeoStatsPlugin.Stats;
+using NeoStats.Core;
+using NeoStatsPlugin.Extensions;
 
 namespace NeoStatsPlugin
 {
@@ -40,11 +41,13 @@ namespace NeoStatsPlugin
         public void OnCommit(Snapshot snapshot)
         {
             var block = GetBlock(snapshot.PersistingBlock);
-
             if (block != null) Log(block);
         }
 
-        public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList) { }
+        public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)
+        {
+            GetBlock(snapshot.PersistingBlock);
+        }
 
         #endregion
 
@@ -74,31 +77,33 @@ namespace NeoStatsPlugin
                             break;
                         }
 
+                        var block = GetBlock(payload.BlockIndex);
+
                         switch (cnmsg)
                         {
                             case ChangeView view:
                                 {
-                                    GetBlock(payload.BlockIndex)?.OnChangeViewReceived(payload, view);
+                                    //block?.OnChangeViewReceived(payload, view);
                                     break;
                                 }
                             case PrepareRequest request:
                                 {
-                                    GetBlock(payload.BlockIndex)?.OnPrepareRequestReceived(payload, request);
+                                    //block?.OnPrepareRequestReceived(payload, request);
                                     break;
                                 }
                             case PrepareResponse response:
                                 {
-                                    GetBlock(payload.BlockIndex)?.OnPrepareResponseReceived(payload, response);
+                                    //block?.OnPrepareResponseReceived(payload, response);
                                     break;
                                 }
                             case Commit commit:
                                 {
-                                    GetBlock(payload.BlockIndex)?.OnCommitReceived(payload, commit);
+                                    //block?.OnCommitReceived(payload, commit);
                                     break;
                                 }
                             case RecoveryMessage recovery:
                                 {
-                                    GetBlock(payload.BlockIndex)?.OnRecoveryMessageReceived(payload, recovery);
+                                    //block?.OnRecoveryMessageReceived(payload, recovery);
                                     break;
                                 }
                         }
