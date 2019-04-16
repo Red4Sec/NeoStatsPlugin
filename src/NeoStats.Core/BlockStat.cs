@@ -43,6 +43,11 @@ namespace NeoStats.Core
         public TransactionStat Transactions { get; } = new TransactionStat();
 
         /// <summary>
+        /// P2P stats
+        /// </summary>
+        public P2PStat P2P { get; } = new P2PStat();
+
+        /// <summary>
         /// Consensus phases
         /// </summary>
         [JsonIgnore]

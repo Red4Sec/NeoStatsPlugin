@@ -5,6 +5,9 @@ using NeoStats.Core;
 
 namespace NeoStats.Extensions
 {
+    /// <summary>
+    /// https://developers.google.com/chart/interactive/docs/gallery/barchart
+    /// </summary>
     public static class ChartExtensions
     {
         public static string DoTimePerBlockChart(this BlockStatCollection[] stats)

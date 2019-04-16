@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using Neo.Consensus;
 using Neo.Ledger;
 using Neo.Network.P2P;
@@ -17,6 +18,8 @@ namespace NeoStatsPlugin
     public class StatsPlugin : Plugin, IPersistencePlugin, IP2PPlugin
     {
         private readonly BlockStatCollection _blocks = new BlockStatCollection();
+        private long _P2PBytesReceived = 0;
+        private long _P2PMsgReceived = 0;
 
         public override string Name => "StatsPlugin";
 
@@ -46,7 +49,15 @@ namespace NeoStatsPlugin
 
         public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)
         {
-            GetBlock(snapshot.PersistingBlock);
+            var block = GetBlock(snapshot.PersistingBlock);
+
+            if (block != null)
+            {
+                // Reset p2p stats
+
+                block.P2P.Received.Bytes = Interlocked.Exchange(ref _P2PBytesReceived, 0);
+                block.P2P.Received.Count = Interlocked.Exchange(ref _P2PMsgReceived, 0);
+            }
         }
 
         #endregion
@@ -55,6 +66,13 @@ namespace NeoStatsPlugin
 
         public bool OnP2PMessage(Message message)
         {
+            // Increase p2p stats
+
+            Interlocked.Add(ref _P2PBytesReceived, message.Size);
+            Interlocked.Increment(ref _P2PMsgReceived);
+
+            // Parse Message
+
             switch (message.Command)
             {
                 case "block":
