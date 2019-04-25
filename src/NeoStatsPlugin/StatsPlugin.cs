@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using Neo;
 using Neo.Consensus;
-using Neo.IO.Caching;
 using Neo.Ledger;
 using Neo.Network.P2P;
 using Neo.Network.P2P.Payloads;
