@@ -54,11 +54,13 @@ namespace NeoStatsPlugin.Extensions
 
                     // Key
 
+                    stream.Write(BitConverter.GetBytes(item.Key.Key.Length), 0, 4);
                     stream.Write(item.Key.Key, 0, item.Key.Key.Length);
 
                     // Value
 
                     stream.WriteByte((byte)(item.Item.IsConstant ? 1 : 0));
+                    stream.Write(BitConverter.GetBytes(item.Item.Value.Length), 0, 4);
                     stream.Write(item.Item.Value, 0, item.Item.Value.Length);
                 }
 
