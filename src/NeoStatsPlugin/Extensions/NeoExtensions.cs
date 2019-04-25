@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using Neo.IO.Caching;
 using Neo.Ledger;
 using Neo.Network.P2P.Payloads;
 using NeoStats.Core;
@@ -9,6 +13,58 @@ namespace NeoStatsPlugin.Extensions
     public static class NeoExtensions
     {
         private static readonly DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
+        /// Sha256
+        /// </summary>
+        /// <param name="data">Data</param>
+        /// <returns>Data</returns>
+        public static byte[] ToSha256(this byte[] data)
+        {
+            using (var hash = SHA256.Create())
+            {
+                return hash.ComputeHash(data);
+            }
+        }
+
+        /// <summary>
+        /// Serialize
+        /// </summary>
+        /// <param name="changes">Changes</param>
+        /// <returns>Serialized bytes</returns>
+        public static byte[] Serialize(this IEnumerable<DataCache<StorageKey, StorageItem>.Trackable> changes)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var data = changes.ToArray();
+
+                // count
+
+                stream.Write(BitConverter.GetBytes(data.Length), 0, 4));
+
+                foreach (var item in data)
+                {
+                    // State
+
+                    stream.WriteByte((byte)item.State);
+
+                    // Script hash
+
+                    stream.Write(item.Key.ScriptHash.ToArray(), 0, item.Key.ScriptHash.Size);
+
+                    // Key
+
+                    stream.Write(item.Key.Key, 0, item.Key.Key.Length);
+
+                    // Value
+
+                    stream.WriteByte((byte)(item.Item.IsConstant ? 1 : 0));
+                    stream.Write(item.Item.Value, 0, item.Item.Value.Length);
+                }
+
+                return stream.ToArray();
+            }
+        }
 
         /// <summary>
         /// Update MemPool

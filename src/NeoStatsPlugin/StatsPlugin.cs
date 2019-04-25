@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using Neo;
 using Neo.Consensus;
+using Neo.IO.Caching;
 using Neo.Ledger;
 using Neo.Network.P2P;
 using Neo.Network.P2P.Payloads;
@@ -44,7 +46,11 @@ namespace NeoStatsPlugin
         public void OnCommit(Snapshot snapshot)
         {
             var block = GetBlock(snapshot.PersistingBlock);
-            if (block != null) Log(block);
+            if (block != null)
+            {
+                block.StorageHash = "0x" + snapshot.Storages.GetChangeSet().Serialize().ToSha256().ToHexString().ToUpperInvariant();
+                Log(block);
+            }
         }
 
         public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)

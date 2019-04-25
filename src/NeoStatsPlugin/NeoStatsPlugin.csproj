@@ -15,15 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Neo">
-      <HintPath>..\..\..\..\..\Neo\neo\neo\bin\Debug\net47\Neo.dll</HintPath>
-    </Reference>
-    <Reference Include="Neo.VM">
-      <HintPath>..\..\..\..\..\Neo\neo\neo\bin\Debug\net47\Neo.VM.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="NeoStatsPlugin\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

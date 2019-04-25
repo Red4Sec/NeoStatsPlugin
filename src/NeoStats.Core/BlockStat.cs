@@ -48,6 +48,11 @@ namespace NeoStats.Core
         public P2PStat P2P { get; } = new P2PStat();
 
         /// <summary>
+        /// Storage Hash
+        /// </summary>
+        public string StorageHash { get; set; } = "";
+
+        /// <summary>
         /// Consensus phases
         /// </summary>
         [JsonIgnore]
