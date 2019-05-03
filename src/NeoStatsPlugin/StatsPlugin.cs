@@ -10,8 +10,7 @@ using Neo.Network.P2P;
 using Neo.Network.P2P.Payloads;
 using Neo.Persistence;
 using Neo.Plugins;
-using NeoStats.Core;
-using NeoStats.Core.Extensions;
+using NeoStatsPlugin.Core;
 using NeoStatsPlugin.Extensions;
 
 namespace NeoStatsPlugin

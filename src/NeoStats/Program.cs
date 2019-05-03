@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using NeoStats.Core;
 using NeoStats.Extensions;
+using NeoStatsPlugin.Core;
 
 namespace NeoStats
 {

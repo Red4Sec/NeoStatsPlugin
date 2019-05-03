@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NeoStats.Core\NeoStats.Core.csproj" />
+    <ProjectReference Include="..\NeoStatsPlugin\NeoStatsPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
