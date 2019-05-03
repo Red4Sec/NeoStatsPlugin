@@ -5,11 +5,11 @@
         /// <summary>
         /// Total bytes
         /// </summary>
-        public long Bytes { get; set; } = 0;
+        public long TotalBytes { get; set; } = 0;
 
         /// <summary>
         /// Message count
         /// </summary>
-        public long Count { get; set; } = 0;
+        public long MessageCount { get; set; } = 0;
     }
 }

@@ -7,7 +7,17 @@ namespace NeoStats.Core
         /// <summary>
         /// Count
         /// </summary>
-        public MemPoolCountStat Count { get; } = new MemPoolCountStat();
+        public int Count => UnVerified + Verified;
+
+        /// <summary>
+        /// UnVerified Count
+        /// </summary>
+        public int UnVerified { get; set; } = 0;
+
+        /// <summary>
+        /// Verified Count
+        /// </summary>
+        public int Verified { get; set; } = 0;
 
         /// <summary>
         /// Capacity

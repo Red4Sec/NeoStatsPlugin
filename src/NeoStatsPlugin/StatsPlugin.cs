@@ -60,8 +60,8 @@ namespace NeoStatsPlugin
             {
                 // Reset p2p stats
 
-                block.P2P.Received.Bytes = Interlocked.Exchange(ref _P2PBytesReceived, 0);
-                block.P2P.Received.Count = Interlocked.Exchange(ref _P2PMsgReceived, 0);
+                block.P2P.Received.TotalBytes = Interlocked.Exchange(ref _P2PBytesReceived, 0);
+                block.P2P.Received.MessageCount = Interlocked.Exchange(ref _P2PMsgReceived, 0);
             }
         }
 

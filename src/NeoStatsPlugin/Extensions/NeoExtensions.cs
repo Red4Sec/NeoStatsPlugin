@@ -75,8 +75,8 @@ namespace NeoStatsPlugin.Extensions
         public static void UpdateMemPool(this MemPoolStat memPool)
         {
             memPool.Capacity = Blockchain.Singleton.MemPool.Capacity;
-            memPool.Count.UnVerified = Blockchain.Singleton.MemPool.UnVerifiedCount;
-            memPool.Count.Verified = Blockchain.Singleton.MemPool.VerifiedCount;
+            memPool.UnVerified = Blockchain.Singleton.MemPool.UnVerifiedCount;
+            memPool.Verified = Blockchain.Singleton.MemPool.VerifiedCount;
         }
 
         /// <summary>
