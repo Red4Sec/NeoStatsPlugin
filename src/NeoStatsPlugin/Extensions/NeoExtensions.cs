@@ -40,7 +40,7 @@ namespace NeoStatsPlugin.Extensions
 
                 // count
 
-                stream.Write(BitConverter.GetBytes(data.Length), 0, 4));
+                stream.Write(BitConverter.GetBytes(data.Length), 0, 4);
 
                 foreach (var item in data)
                 {
