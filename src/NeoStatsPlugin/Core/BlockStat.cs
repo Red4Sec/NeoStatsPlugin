@@ -28,6 +28,11 @@ namespace NeoStatsPlugin.Core
         public long Size { get; set; } = 0;
 
         /// <summary>
+        /// View number
+        /// </summary>
+        public byte ViewNumber { get; set; } = 0;
+
+        /// <summary>
         /// Time between blocks
         /// </summary>
         public TimeSpan ElapsedTime { get; set; } = TimeSpan.Zero;

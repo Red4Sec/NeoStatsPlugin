@@ -121,6 +121,7 @@ namespace NeoStatsPlugin
                             case Commit commit:
                                 {
                                     //block?.OnCommitReceived(payload, commit);
+                                    block.ViewNumber = Math.Max(block.ViewNumber, commit.ViewNumber);
                                     break;
                                 }
                             case RecoveryMessage recovery:
