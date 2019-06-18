@@ -105,28 +105,27 @@ namespace NeoStatsPlugin
                         {
                             case ChangeView view:
                                 {
-                                    //block?.OnChangeViewReceived(payload, view);
+                                    block?.OnChangeViewReceived(payload, view);
                                     break;
                                 }
                             case PrepareRequest request:
                                 {
-                                    //block?.OnPrepareRequestReceived(payload, request);
+                                    block?.OnPrepareRequestReceived(payload, request);
                                     break;
                                 }
                             case PrepareResponse response:
                                 {
-                                    //block?.OnPrepareResponseReceived(payload, response);
+                                    block?.OnPrepareResponseReceived(payload, response);
                                     break;
                                 }
                             case Commit commit:
                                 {
-                                    //block?.OnCommitReceived(payload, commit);
-                                    block.ViewNumber = Math.Max(block.ViewNumber, commit.ViewNumber);
+                                    block?.OnCommitReceived(payload, commit);
                                     break;
                                 }
                             case RecoveryMessage recovery:
                                 {
-                                    //block?.OnRecoveryMessageReceived(payload, recovery);
+                                    block?.OnRecoveryMessageReceived(payload, recovery);
                                     break;
                                 }
                         }

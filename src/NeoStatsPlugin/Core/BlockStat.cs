@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Neo.Consensus;
+using Neo.Network.P2P.Payloads;
 using NeoStatsPlugin.Extensions;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NeoStatsPlugin.Core
 {
     public class BlockStat
     {
+        /// <summary>
+        /// Consensus phases
+        /// </summary>
+        private readonly Dictionary<ConsensusMessageType, ConsensusPhaseStat> _consensus = new Dictionary<ConsensusMessageType, ConsensusPhaseStat>();
+
         /// <summary>
         /// Block index
         /// </summary>
@@ -60,8 +67,7 @@ namespace NeoStatsPlugin.Core
         /// <summary>
         /// Consensus phases
         /// </summary>
-        [JsonIgnore]
-        public Dictionary<byte, ConsensusPhaseStat> Consensus { get; set; } = new Dictionary<byte, ConsensusPhaseStat>();
+        public IDictionary<ConsensusMessageType, ConsensusPhaseCount> Consensus => _consensus.ToDictionary(k => k.Key, v => v.Value.Messages);
 
         /// <summary>
         /// Constructor
@@ -71,6 +77,62 @@ namespace NeoStatsPlugin.Core
         {
             Index = index;
         }
+
+        #region Consensus
+
+        public void OnCommitReceived(ConsensusPayload payload, Commit commit)
+        {
+            if (!_consensus.TryGetValue(ConsensusMessageType.Commit, out var state))
+            {
+                state = new ConsensusPhaseStat();
+            }
+
+            state.Add(payload);
+            ViewNumber = Math.Max(ViewNumber, commit.ViewNumber);
+        }
+
+        public void OnPrepareResponseReceived(ConsensusPayload payload, PrepareResponse response)
+        {
+            if (!_consensus.TryGetValue(ConsensusMessageType.Commit, out var state))
+            {
+                state = new ConsensusPhaseStat();
+            }
+
+            state.Add(payload);
+
+        }
+
+        public void OnPrepareRequestReceived(ConsensusPayload payload, PrepareRequest request)
+        {
+            if (!_consensus.TryGetValue(ConsensusMessageType.PrepareRequest, out var state))
+            {
+                state = new ConsensusPhaseStat();
+            }
+
+            state.Add(payload);
+        }
+
+        public void OnChangeViewReceived(ConsensusPayload payload, ChangeView view)
+        {
+            if (!_consensus.TryGetValue(ConsensusMessageType.ChangeView, out var state))
+            {
+                state = new ConsensusPhaseStat();
+            }
+
+            state.Add(payload);
+        }
+
+        public void OnRecoveryMessageReceived(ConsensusPayload payload, RecoveryMessage recovery)
+        {
+            if (!_consensus.TryGetValue(ConsensusMessageType.RecoveryMessage, out var state))
+            {
+                state = new ConsensusPhaseStat();
+            }
+
+            state.Add(payload);
+        }
+
+        #endregion
 
         /// <summary>
         /// String representation

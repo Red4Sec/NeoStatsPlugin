@@ -1,4 +1,5 @@
 ﻿using NeoStatsPlugin.Extensions;
+using System.Collections.Generic;
 
 namespace NeoStatsPlugin.Core
 {
@@ -25,9 +26,9 @@ namespace NeoStatsPlugin.Core
         public int Duplicated { get; set; } = 0;
 
         /// <summary>
-        /// Total CN
+        /// Validator Indexes
         /// </summary>
-        public int M { get; set; } = 0;
+        public IList<ushort> ValidatorIndexes { get; } = new List<ushort>();
 
         /// <summary>
         /// String representation
