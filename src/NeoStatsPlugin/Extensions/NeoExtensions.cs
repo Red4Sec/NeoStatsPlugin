@@ -98,7 +98,7 @@ namespace NeoStatsPlugin.Extensions
         public static void UpdateBlockInfo(this BlockStat block, Block currentBlock, BlockStat previousBlock)
         {
             bool firstTime = block.Size == 0;
-            var time = unixEpoch.AddSeconds(currentBlock.Timestamp);
+            var time = unixEpoch.AddMilliseconds(currentBlock.Timestamp);
 
             if (!firstTime)
             {
