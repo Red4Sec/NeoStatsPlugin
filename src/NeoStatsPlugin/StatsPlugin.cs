@@ -79,19 +79,19 @@ namespace NeoStatsPlugin
 
             switch (message.Command)
             {
-                case "block":
+                case MessageCommand.Block:
                     {
-                        GetBlock(message.GetPayload<Block>());
+                        GetBlock((Block)message.Payload);
                         break;
                     }
-                case "consensus":
+                case MessageCommand.Consensus:
                     {
                         ConsensusPayload payload;
                         ConsensusMessage cnmsg;
 
                         try
                         {
-                            payload = message.GetPayload<ConsensusPayload>();
+                            payload = (ConsensusPayload)message.Payload;
                             cnmsg = payload.ConsensusMessage;
                         }
                         catch

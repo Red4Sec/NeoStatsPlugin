@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -86,7 +86,7 @@ namespace NeoStatsPlugin.Extensions
         /// <param name="transactions">Transactions</param>
         public static void Update(this TransactionStat stat, Transaction[] transactions)
         {
-            stat.LowPriorty = transactions.Where(u => u.References == null ? true /* Prevent error if we don't have the chain */ : u.IsLowPriority).Count();
+            stat.LowPriorty = 0; // Neo3 haven't got free tx
             stat.HighPriorty = transactions.Length - stat.LowPriorty;
         }
 
