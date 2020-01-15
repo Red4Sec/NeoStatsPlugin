@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.IO;
+using IO = System.IO;
 using System.Text;
 using System.Threading;
-using Neo;
-using Neo.Consensus;
-using Neo.Ledger;
-using Neo.Network.P2P;
-using Neo.Network.P2P.Payloads;
-using Neo.Persistence;
 using Neo.Plugins;
 using NeoStatsPlugin.Core;
 using NeoStatsPlugin.Extensions;
+using Neo.Network.P2P.Payloads;
+using Neo.Persistence;
+using Neo.Ledger;
+using Neo;
+using Neo.Network.P2P;
+using Neo.Consensus;
 
 namespace NeoStatsPlugin
 {
@@ -23,25 +23,25 @@ namespace NeoStatsPlugin
 
         public override string Name => "StatsPlugin";
 
-        public override void Configure()
+        protected override void Configure()
         {
             Settings.Load(GetConfiguration());
 
             // Write empty json
 
-            var dir = Path.GetDirectoryName(Settings.Default.Path);
+            var dir = IO.Path.GetDirectoryName(Settings.Default.Path);
 
-            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+            if (!string.IsNullOrEmpty(dir) && !IO.Directory.Exists(dir))
             {
-                Directory.CreateDirectory(dir);
+                IO.Directory.CreateDirectory(dir);
             }
 
-            File.WriteAllText(Settings.Default.Path, "[\n\n]");
+            IO.File.WriteAllText(Settings.Default.Path, "[\n\n]");
         }
 
         #region Storage
 
-        public void OnCommit(Snapshot snapshot)
+        public void OnCommit(StoreView snapshot)
         {
             var block = GetBlock(snapshot.PersistingBlock);
             if (block != null)
@@ -51,7 +51,7 @@ namespace NeoStatsPlugin
             }
         }
 
-        public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)
+        public void OnPersist(StoreView snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)
         {
             var block = GetBlock(snapshot.PersistingBlock);
 
@@ -198,9 +198,9 @@ namespace NeoStatsPlugin
                 // Save 5 blocks
             }
 
-            using (var stream = File.OpenWrite(Settings.Default.Path))
+            using (var stream = IO.File.OpenWrite(Settings.Default.Path))
             {
-                stream.Seek(Math.Max(0, stream.Length - 2), SeekOrigin.Begin);
+                stream.Seek(Math.Max(0, stream.Length - 2), IO.SeekOrigin.Begin);
 
                 var str = block.ToJson() + "\n]";
 
